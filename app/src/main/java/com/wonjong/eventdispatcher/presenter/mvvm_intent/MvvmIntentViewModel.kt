@@ -1,4 +1,4 @@
-package com.wonjong.eventdispatcher.presenter.mvvm
+package com.wonjong.eventdispatcher.presenter.mvvm_intent
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -19,15 +19,15 @@ import javax.inject.Inject
  * Created by leewonjong@29cm.co.kr on 2023-01-06
  */
 @HiltViewModel
-class MvvmViewModel @Inject constructor(
+class MvvmIntentViewModel @Inject constructor(
     private val getPosts: GetPosts,
 ) : ViewModel() {
     private val scope = viewModelScope + CoroutineExceptionHandler { _, throwable ->
         Log.e(javaClass.simpleName, throwable.toString())
     }
 
-    private val _events = MutableSharedFlow<MvvmEvents>()
-    val events = _events.asSharedFlow()
+    private val _states = MutableSharedFlow<MvvmIntentAction>()
+    val states = _states.asSharedFlow()
 
     val posts = flow<LCE<List<PostEntity>>> {
         emit(LCE.Loading)
@@ -38,16 +38,16 @@ class MvvmViewModel @Inject constructor(
         }
     }
 
-    fun onItemClick(post: PostEntity) {
+    fun showToast(message: String) {
         // Handle your business logic :D
         scope.launch {
-            _events.emit(MvvmEvents.ClickItem(post = post))
+            _states.emit(MvvmIntentAction.ShowToast(message = message))
         }
     }
 
-    sealed interface MvvmEvents {
-        data class ClickItem(
-            val post: PostEntity
-        ) : MvvmEvents
+    sealed interface MvvmIntentAction {
+        data class ShowToast(
+            val message: String
+        ) : MvvmIntentAction
     }
 }

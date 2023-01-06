@@ -37,7 +37,7 @@ class MvvmFragment : Fragment() {
     lateinit var eventTracker: EventTracker
 
     private val mvvmAdapter: MvvmAdapter by lazy {
-        MvvmAdapter(viewModel::onItemClick)
+        MvvmAdapter(onItemClick = viewModel::onItemClick)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -62,10 +62,7 @@ class MvvmFragment : Fragment() {
             binding.loading.isVisible = lce is LCE.Loading
             binding.error.isVisible = lce is LCE.Error
             binding.list.isVisible = lce is LCE.Content
-
-            lce.data?.let { posts ->
-                mvvmAdapter.submitList(posts)
-            }
+            mvvmAdapter.submitList(lce.data ?: emptyList())
         }.launchIn(lifecycleScope)
 
         viewModel.events.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach { events ->
