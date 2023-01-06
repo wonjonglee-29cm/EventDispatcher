@@ -12,11 +12,16 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import com.wonjong.eventdispatcher.databinding.FragmentMvvmBinding
+import com.wonjong.eventdispatcher.event.EventTracker
+import com.wonjong.eventdispatcher.event.code.EventTrackingCode
+import com.wonjong.eventdispatcher.event.type.EventTrackingType
 import com.wonjong.eventdispatcher.presenter.mvvm.adapter.MvvmAdapter
 import com.wonjong.eventdispatcher.presenter.utils.LCE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.json.JSONObject
+import javax.inject.Inject
 
 /**
  * Created by leewonjong@29cm.co.kr on 2023-01-03
@@ -27,6 +32,9 @@ class MvvmFragment : Fragment() {
     private val binding: FragmentMvvmBinding get() = _binding!!
 
     private val viewModel: MvvmViewModel by viewModels<MvvmViewModel>()
+
+    @Inject
+    lateinit var eventTracker: EventTracker
 
     private val mvvmAdapter: MvvmAdapter by lazy {
         MvvmAdapter(viewModel::onItemClick)
@@ -68,6 +76,12 @@ class MvvmFragment : Fragment() {
     private fun handleEvents(event: MvvmViewModel.MvvmEvents) = when (event) {
         is MvvmViewModel.MvvmEvents.ClickItem -> {
             Toast.makeText(context, event.post.title, Toast.LENGTH_SHORT).show()
+            val params = JSONObject().apply {
+                put(EventTrackingCode.ID, event.post.id)
+                put(EventTrackingCode.USER_ID, event.post.userId)
+                put(EventTrackingCode.TITLE, event.post.title)
+            }
+            eventTracker.send(EventTrackingType.CLICK_ITEM, params)
         }
     }
 }
