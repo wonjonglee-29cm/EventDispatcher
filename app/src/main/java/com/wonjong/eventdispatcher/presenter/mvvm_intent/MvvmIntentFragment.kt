@@ -42,7 +42,7 @@ class MvvmIntentFragment : Fragment() {
         )
     }
 
-    private val mvvmAdapter: MvvmIntentAdapter by lazy {
+    private val mvvmIntentAdapter: MvvmIntentAdapter by lazy {
         MvvmIntentAdapter(onItemClick = { postEntity ->
             eventDispatcher.dispatchEvent(
                 PostEvents.ClickItem(
@@ -68,7 +68,7 @@ class MvvmIntentFragment : Fragment() {
     }
 
     private fun setUpViews() {
-        binding.list.adapter = mvvmAdapter
+        binding.list.adapter = mvvmIntentAdapter
     }
 
     private fun collectFlows() {
@@ -76,10 +76,10 @@ class MvvmIntentFragment : Fragment() {
             binding.loading.isVisible = lce is LCE.Loading
             binding.error.isVisible = lce is LCE.Error
             binding.list.isVisible = lce is LCE.Content
-            mvvmAdapter.submitList(lce.data ?: emptyList())
+            mvvmIntentAdapter.submitList(lce.data ?: emptyList())
         }.launchIn(lifecycleScope)
 
-        viewModel.states.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach { action ->
+        viewModel.actions.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).onEach { action ->
             handleAction(action)
         }.launchIn(lifecycleScope)
     }

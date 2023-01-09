@@ -26,8 +26,8 @@ class MvvmIntentViewModel @Inject constructor(
         Log.e(javaClass.simpleName, throwable.toString())
     }
 
-    private val _states = MutableSharedFlow<MvvmIntentAction>()
-    val states = _states.asSharedFlow()
+    private val _actions = MutableSharedFlow<MvvmIntentAction>()
+    val actions = _actions.asSharedFlow()
 
     val posts = flow<LCE<List<PostEntity>>> {
         emit(LCE.Loading)
@@ -41,7 +41,7 @@ class MvvmIntentViewModel @Inject constructor(
     fun showToast(message: String) {
         // Handle your business logic :D
         scope.launch {
-            _states.emit(MvvmIntentAction.ShowToast(message = message))
+            _actions.emit(MvvmIntentAction.ShowToast(message = message))
         }
     }
 

@@ -57,4 +57,5 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:2.44.2"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }
