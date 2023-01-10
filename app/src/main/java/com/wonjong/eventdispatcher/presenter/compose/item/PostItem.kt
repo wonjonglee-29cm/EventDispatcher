@@ -6,6 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,7 +30,9 @@ import com.wonjong.eventdispatcher.ui.theme.White
  */
 @Composable
 fun PostItem(
-    post: PostEntity, modifier: Modifier = Modifier, onItemClick: ((PostEntity) -> Unit)? = null
+    post: PostEntity,
+    modifier: Modifier = Modifier,
+    onItemClick: ((PostEntity) -> Unit)? = null
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -37,24 +42,34 @@ fun PostItem(
             }
             .fillMaxWidth()
             .background(White)
-            .padding(horizontal = 10.dp, vertical = 6.dp),
+            .padding(
+                horizontal = 10.dp,
+                vertical = 6.dp
+            ),
     ) {
         Box {
+            val rememberImageData by remember {
+                mutableStateOf(ColorDrawable(post.colorInt))
+            }
             SquareImage(
-                data = ColorDrawable(post.colorInt), modifier = Modifier.align(Alignment.Center)
+                data = rememberImageData,
+                modifier = Modifier.align(Alignment.Center)
             )
             NumberBadge(
-                number = post.id, modifier = Modifier.align(Alignment.BottomEnd)
+                number = post.id,
+                modifier = Modifier.align(Alignment.BottomEnd)
             )
         }
         Spacer(modifier = Modifier.width(6.dp))
         Column {
             TitleText(
-                text = post.title, modifier = modifier
+                text = post.title,
+                modifier = modifier
             )
             Spacer(modifier = Modifier.height(4.dp))
             DescriptionText(
-                text = post.body, modifier = modifier
+                text = post.body,
+                modifier = modifier
             )
         }
     }
@@ -64,7 +79,13 @@ fun PostItem(
 private fun TitleText(
     text: String, modifier: Modifier
 ) = Text(
-    text = text, modifier = modifier, color = Black, fontSize = 14.textDp, maxLines = 1, overflow = TextOverflow.Ellipsis, fontWeight = FontWeight.Bold
+    text = text,
+    modifier = modifier,
+    color = Black,
+    fontSize = 14.textDp,
+    maxLines = 1,
+    overflow = TextOverflow.Ellipsis,
+    fontWeight = FontWeight.Bold
 )
 
 @Composable
@@ -84,7 +105,11 @@ private fun DescriptionText(
 private fun PostItemPreview() {
     PostItem(
         post = PostEntity(
-            id = 0, userId = 1, colorInt = android.graphics.Color.argb(255, 0, 0, 0), title = "Post Test Title", body = stringResource(id = R.string.lorem_ipsum)
+            id = 0,
+            userId = 1,
+            colorInt = android.graphics.Color.argb(255, 0, 0, 0),
+            title = "Post Test Title",
+            body = stringResource(id = R.string.lorem_ipsum)
         )
     )
 }
