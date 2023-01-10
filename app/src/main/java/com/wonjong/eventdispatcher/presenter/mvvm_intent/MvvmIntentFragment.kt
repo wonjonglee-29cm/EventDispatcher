@@ -15,7 +15,7 @@ import com.wonjong.eventdispatcher.databinding.FragmentMvvmIntentBinding
 import com.wonjong.eventdispatcher.event.EventTracker
 import com.wonjong.eventdispatcher.presenter.mvvm_intent.adapter.MvvmIntentAdapter
 import com.wonjong.eventdispatcher.presenter.mvvm_intent.dispatcher.MvvmIntentEventDispatcher
-import com.wonjong.eventdispatcher.presenter.mvvm_intent.dispatcher.events.PostEvents
+import com.wonjong.eventdispatcher.presenter.compose.dispatcher.events.PostEvents
 import com.wonjong.eventdispatcher.presenter.utils.LCE
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
