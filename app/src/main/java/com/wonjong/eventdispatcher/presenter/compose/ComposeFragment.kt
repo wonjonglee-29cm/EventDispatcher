@@ -85,7 +85,6 @@ fun ComposeRoute(
 
     HandleActions(action = actions)
 
-
     when (posts) {
         is LCE.Loading -> {
             Row(
